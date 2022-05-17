@@ -5,6 +5,7 @@ namespace EserciziII_1
 {
     public class Studente
     {
+        public string sCodiceFiscale;
         public string nome;
         public string cognome;
         public DateTime dataDiNascita ;
@@ -14,13 +15,17 @@ namespace EserciziII_1
 
     public class Università
     {
+       
+        
         private List<string> lsSedi;
-        private List<Studente> lsStudenti;
+        private Dictionary<string, Studente> lsStudenti;
+
+       // private List<Studente> lsStudenti;
 
         public Università()
         { 
             lsSedi = new List<string>();
-            lsStudenti = new List<Studente>();
+            lsStudenti = new Dictionary<string, Studente>();
         
         }
         public void AggiungiSedi(string newSede) 
@@ -28,7 +33,7 @@ namespace EserciziII_1
             lsSedi.Add(newSede);
         }
 
-        public bool AggiungiStudente(string nome, string cognome, string dataNascita, ulong matricola)
+        public bool AggiungiStudente(string sCodiceFiscale, string nome, string cognome, string dataNascita, ulong matricola)
         {
                       
 
@@ -39,11 +44,13 @@ namespace EserciziII_1
 
                 Studente newStudente = new Studente();
 
+                newStudente.sCodiceFiscale = sCodiceFiscale;
                 newStudente.nome = nome;
                 newStudente.cognome = cognome;
                 newStudente.dataDiNascita = dtDataNascitaStudente;
                 newStudente.matricola = matricola;
-                lsStudenti.Add(newStudente);
+
+                lsStudenti.Add(sCodiceFiscale, newStudente);
 
                 return true;
             }
@@ -59,19 +66,44 @@ namespace EserciziII_1
             lsSedi.Remove(sSede);
         }
 
+
+        public bool RimuoviStudente(string sCodiceFiscale)
+        {
+
+            return lsStudenti.Remove(sCodiceFiscale);
+        }
+
+
+        /* public void RimuoviStudente(ulong lMatricola)
+         {
+             foreach (Studente studente in lsStudenti)
+             {
+                 if (studente.matricola == lMatricola) 
+                 {
+                     lsStudenti.Remove(studente);
+                     return;
+
+                 }
+                 else Console.WriteLine("Studente non trovato ");
+             }
+
+         } */
+
+        // il foreach
+
         public void RimuoviStudente(ulong lMatricola)
         {
-            foreach (Studente studente in lsStudenti)
+            foreach (string sCodiceFiscale in lsStudenti.Keys)
             {
-                if (studente.matricola == lMatricola) 
+                if (lsStudenti[sCodiceFiscale].matricola == lMatricola)
                 {
-                    lsStudenti.Remove(studente);
+                    lsStudenti.Remove(sCodiceFiscale);
                     return;
 
                 }
                 else Console.WriteLine("Studente non trovato ");
             }
-        
+
         }
 
         public bool CercaSede(string sSede) 
@@ -88,6 +120,7 @@ namespace EserciziII_1
 
         }
 
+        /*
         public void CercaStudente(int anno, out List<Studente>TrovatiList)
         {
             TrovatiList = new List<Studente>();
@@ -106,7 +139,7 @@ namespace EserciziII_1
 
         }
         
-
+        */
 
     }
 }
